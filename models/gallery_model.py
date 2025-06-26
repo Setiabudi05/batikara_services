@@ -2,12 +2,10 @@ import os
 from werkzeug.utils import secure_filename
 from flask import current_app, request
 
-# Serializer untuk JSON / web
-
+# ✅ Tambahkan serializer ini
 def gallery_serializer(gallery):
-    raw_image_path = gallery.get("image", "").replace("\\", "/")
-    full_image_url = f"{request.host_url.rstrip('/')}{raw_image_path}"
-
+    image_path = gallery.get("image", "").replace("\\", "/")
+    full_image_url = f"{request.host_url.rstrip('/')}{image_path}"
     return {
         "id": str(gallery["_id"]),
         "nama_batik": gallery.get("nama_batik", ""),
@@ -15,13 +13,15 @@ def gallery_serializer(gallery):
         "image": full_image_url
     }
 
-# Proses data dari form POST create
+# ✅ Buat galeri baru
 def create_gallery_data(form, image_file):
     filename = secure_filename(image_file.filename)
     upload_folder = current_app.config['UPLOAD_FOLDER_GALLERY']
     image_path = os.path.join(upload_folder, filename)
     image_file.save(image_path)
-    image_url = f"/{image_path}"
+
+    relative_path = os.path.relpath(image_path, 'static').replace("\\", "/")
+    image_url = f"/static/{relative_path}"
 
     return {
         "nama_batik": form.get("nama_batik"),
@@ -29,7 +29,7 @@ def create_gallery_data(form, image_file):
         "image": image_url
     }
 
-# Proses data dari form POST edit
+# ✅ Update galeri
 def update_gallery_data(form, image_file=None):
     update_data = {
         "nama_batik": form.get("nama_batik"),
@@ -41,6 +41,8 @@ def update_gallery_data(form, image_file=None):
         upload_folder = current_app.config['UPLOAD_FOLDER_GALLERY']
         image_path = os.path.join(upload_folder, filename)
         image_file.save(image_path)
-        update_data["image"] = f"/{image_path}"
+
+        relative_path = os.path.relpath(image_path, 'static').replace("\\", "/")
+        update_data["image"] = f"/static/{relative_path}"
 
     return update_data

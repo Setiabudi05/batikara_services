@@ -7,13 +7,13 @@ gallery_bp = Blueprint('gallery', __name__)
 # GET - Flutter API
 @gallery_bp.route('/gallery', methods=['GET'])
 def get_galleries():
-    galleries = current_app.mongo.db.gallery.find()
+    galleries = current_app.mongo.db.galeryBatik.find()
     return jsonify([gallery_serializer(g) for g in galleries]), 200
 
 # INDEX - Web
 @gallery_bp.route('/web/gallery')
 def web_gallery_index():
-    galleries = current_app.mongo.db.gallery.find()
+    galleries = current_app.mongo.db.galeryBatik.find()
     return render_template('gallery/index.html', galleries=[gallery_serializer(g) for g in galleries])
 
 # CREATE
@@ -27,7 +27,8 @@ def web_gallery_create():
             return redirect(request.url)
 
         gallery_data = create_gallery_data(request.form, image)
-        current_app.mongo.db.gallery.insert_one(gallery_data)
+        current_app.mongo.db.galeryBatik.insert_one(gallery_data)
+        flash(" gallery berhasil ditambahkan!", "success")
         return redirect(url_for('gallery.web_gallery_index'))
 
     return render_template('gallery/create.html')
@@ -35,17 +36,18 @@ def web_gallery_create():
 # EDIT
 @gallery_bp.route('/web/gallery/edit/<id>', methods=['GET', 'POST'])
 def web_gallery_edit(id):
-    gallery = current_app.mongo.db.gallery.find_one({"_id": ObjectId(id)})
+    gallery = current_app.mongo.db.galeryBatik.find_one({"_id": ObjectId(id)})
     if not gallery:
         return "Not found", 404
 
     if request.method == 'POST':
         image = request.files.get("image")
         update_data = update_gallery_data(request.form, image)
-        current_app.mongo.db.gallery.update_one(
+        current_app.mongo.db.galeryBatik.update_one(
             {"_id": ObjectId(id)},
             {"$set": update_data}
         )
+        flash("gallery berhasil diperbarui!", "success")
         return redirect(url_for('gallery.web_gallery_index'))
 
     return render_template('gallery/edit.html', gallery=gallery_serializer(gallery))
@@ -53,5 +55,6 @@ def web_gallery_edit(id):
 # DELETE
 @gallery_bp.route('/web/gallery/delete/<id>', methods=['POST'])
 def web_gallery_delete(id):
-    current_app.mongo.db.gallery.delete_one({"_id": ObjectId(id)})
+    current_app.mongo.db.galeryBatik.delete_one({"_id": ObjectId(id)})
     return redirect(url_for('gallery.web_gallery_index'))
+

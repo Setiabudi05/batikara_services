@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Batik - Admin BatikKara</title>
+  <title>Data Event - Admin BatikKara</title>
 
   <!-- Boxicons -->
   <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/galeri.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/event.css') }}" />
 </head>
 
 <body>
@@ -24,28 +24,29 @@
       <li><a href="{{ url_for('dashboard.admin_dashboard') }}"><i class='bx bxs-dashboard'></i><span
             class="text">Dashboard</span></a></li>
       <li class="menu-label"><span class="text">Master Data</span></li>
-      <li class="active"><a href="{{ url_for('gallery.web_gallery_index') }}"><i
-            class='bx bxs-shopping-bag-alt'></i><span class="text">Data Batik</span></a></li>
-      <li><a href="#"><i class='bx bxs-group'></i><span class="text">Data User</span></a></li>
+      <li><a href="{{ url_for('gallery.web_gallery_index') }}"><i class='bx bxs-shopping-bag-alt'></i><span
+            class="text">Data Batik</span></a></li>
+      <li><a href="#"><i class='bx bxs-group'></i><span class="text">Data User</span></a>
+      </li>
       <li><a href="{{ url_for('article.web_article_index') }}"><i class='bx bxs-news'></i><span class="text">Data
             Artikel</span></a></li>
-      <li><a href="{{ url_for('event_web.event_index') }}"><i class='bx bxs-calendar-event'></i><span class="text">Data
-            Event</span></a></li>
+      <li class="active"><a href="{{ url_for('event_web.event_index') }}"><i class='bx bxs-calendar-event'></i><span
+            class="text">Data Event</span></a></li>
       <li><a href="#"><i class='bx bxs-cog'></i><span class="text">Settings</span></a></li>
-      <li><a href="/logout" class="logout"><i class='bx bxs-log-out-circle'></i><span class="text">Logout</span></a>
-      </li>
+      <li><a href="{{ url_for('auth_web.logout') }}" class="logout"><i class='bx bxs-log-out-circle'></i><span
+            class="text">Logout</span></a></li>
     </ul>
+
   </section>
 
   <!-- CONTENT -->
   <section id="content">
-    <!-- NAVBAR -->
     <nav>
       <i class='bx bx-menu'></i>
-      <a href="#" class="nav-link">Data Batik</a>
+      <a href="#" class="nav-link">Data Event</a>
       <form action="#">
         <div class="form-input">
-          <input type="search" placeholder="Search batik..." />
+          <input type="search" placeholder="Search event..." />
           <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
         </div>
       </form>
@@ -55,10 +56,7 @@
       <a href="#" class="profile"><img src="{{ url_for('static', filename='img/people.png') }}" alt="profile" /></a>
     </nav>
 
-    <!-- MAIN -->
     <main>
-
-      <!-- Flash Message -->
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       <div id="popup" class="popup show">
@@ -74,68 +72,67 @@
 
       <div class="head-title">
         <div class="left">
-          <h1>Data Batik</h1>
+          <h1>Data Event</h1>
           <ul class="breadcrumb">
             <li><a href="{{ url_for('dashboard.admin_dashboard') }}">Dashboard</a></li>
             <li><i class='bx bx-chevron-right'></i></li>
-            <li><a class="active" href="#">Data Batik</a></li>
+            <li><a class="active" href="#">Data Event</a></li>
           </ul>
         </div>
-        <a href="{{ url_for('gallery.web_gallery_create') }}" class="btn-download">
+        <a href="{{ url_for('event_web.create_event') }}" class="btn-download">
           <i class='bx bx-plus'></i>
-          <span class="text">Tambah Batik</span>
+          <span class="text">Tambah Event</span>
         </a>
       </div>
 
-      <!-- TABEL BATIK -->
       <div class="table-data">
         <div class="order">
           <div class="head">
-            <h3>Daftar Batik</h3>
+            <h3>Daftar Event</h3>
           </div>
           <table>
             <thead>
               <tr>
                 <th>Foto</th>
-                <th>Motif Batik</th>
+                <th>Judul</th>
+                <th>Waktu</th>
+                <th>Lokasi</th>
                 <th>Deskripsi</th>
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {% for item in galleries %}
+              {% for event in events %}
               <tr>
                 <td>
-                  {% if item.image %}
-                  <img src="{{ item.image }}" alt="Foto galeri" width="100" style="border-radius: 10px;">
+                  {% if event.foto %}
+                  <img src="{{ url_for('static', filename='uploads/' + event.foto) }}" alt="Foto Event" width="100"
+                    style="border-radius: 10px;">
                   {% else %}
-                  <span style="color: gray;">Tidak ada foto</span>
+                  <img src="{{ url_for('static', filename='img/default-event.jpg') }}" alt="Default" width="100"
+                    style="border-radius: 10px;">
                   {% endif %}
                 </td>
-                <td>{{ item.nama_batik }}</td>
-                <td>{{ item.deskripsi }}</td>
+                <td>{{ event.judul }}</td>
+                <td>{{ event.datetime|datetimeformat("%d/%m/%Y %H:%M") }}</td>
+                <td>{{ event.lokasi }}</td>
+                <td>{{ event.deskripsi }}</td>
                 <td>
-                  <a href="{{ url_for('gallery.web_gallery_edit', id=item.id) }}" class="btn-action btn-edit">
-                    <i class='bx bx-edit'></i> Edit
+                  <a href="{{ url_for('event_web.edit_event', id=event._id) }}" class="btn-action btn-edit">
+                    <i class='bx bx-edit-alt'></i> Edit
                   </a>
-
-                  <form method="POST" action="{{ url_for('gallery.web_gallery_delete', id=item.id) }}"
-                    style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus batik ini?')">
-                    <button type="submit" class="btn-action btn-delete">
-                      <i class='bx bx-trash'></i> Delete
-                    </button>
-                  </form>
-
+                  <a href="{{ url_for('event_web.delete_event', id=event._id) }}" class="btn-action btn-delete"
+                    onclick="return confirm('Yakin hapus event ini?')">
+                    <i class='bx bx-trash'></i> Delete
+                  </a>
                 </td>
               </tr>
               {% else %}
               <tr>
-                <td colspan="4">Belum ada data batik.</td>
+                <td colspan="6">Belum ada event.</td>
               </tr>
               {% endfor %}
             </tbody>
-
-
           </table>
         </div>
       </div>
