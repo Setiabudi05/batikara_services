@@ -56,5 +56,6 @@ def web_gallery_edit(id):
 @gallery_bp.route('/web/gallery/delete/<id>', methods=['POST'])
 def web_gallery_delete(id):
     current_app.mongo.db.galeryBatik.delete_one({"_id": ObjectId(id)})
+    flash("Event berhasil dihapus!", "info")
     return redirect(url_for('gallery.web_gallery_index'))
 

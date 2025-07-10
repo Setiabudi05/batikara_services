@@ -15,6 +15,8 @@ from routes.favorite_routes import favorite_bp
 from routes.user_routes import user_bp
 from routes.dashboard_routes import dashboard_bp
 from routes.event_routes import event_bp
+from routes.batik_places_routes import batik_place_bp 
+from routes.video_routes import video_bp
 import os 
 
 
@@ -68,6 +70,9 @@ app.register_blueprint(favorite_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(event_bp)
+app.register_blueprint(batik_place_bp)
+app.register_blueprint(video_bp)
+
 
 
 

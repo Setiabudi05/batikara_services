@@ -9,12 +9,17 @@ def admin_dashboard():
     batik_count = db["gallery"].count_documents({})
     article_count = db["articles"].count_documents({})
     event_count = db["events"].count_documents({})
+    video_count = db.videos.count_documents({})
+    mapping_count = db.batik_places.count_documents({})
+    
 
     return render_template("dashboard.html",
         user_count=user_count,
         batik_count=batik_count,
         article_count=article_count,
-        event_count=event_count
+        event_count=event_count,
+        video_count=video_count,
+        mapping_count=mapping_count
     )
 
 @dashboard_bp.route("/")

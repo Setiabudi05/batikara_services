@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>DashboardBatikKara</title>
+	<title>Dashboard - Admin BatikKara</title>
 
 	<!-- Boxicons CDN -->
 	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
@@ -25,16 +25,44 @@
 			<span class="text">Admin BatikKara</span>
 		</a>
 		<ul class="side-menu top">
-			<li class="active"><a href="{{ url_for('dashboard.admin_dashboard') }}"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a></li>
+			<li class="active">
+				<a href="{{ url_for('dashboard.admin_dashboard') }}">
+					<i class='bx bxs-dashboard'></i><span class="text">Dashboard</span>
+				</a>
+			</li>
 			<li class="menu-label"><span class="text">Master Data</span></li>
-			<li><a href="{{ url_for('gallery.web_gallery_index') }}"><i class='bx bxs-shopping-bag-alt'></i><span class="text">Data Batik</span></a></li>
-			<li><a href="#"><i class='bx bxs-group'></i><span class="text">Data User</span></a></li>
-			<li><a href="{{ url_for('article.web_article_index') }}"><i class='bx bxs-news'></i><span class="text">Data Artikel</span></a></li>
-			<li><a href="{{ url_for('event_web.event_index') }}"><i class='bx bxs-calendar-event'></i><span class="text">Data Event</span></a></li>
-			<li><a href="#"><i class='bx bxs-cog'></i><span class="text">Settings</span></a></li>
-			<li><a href="{{ url_for('auth_web.logout') }}" class="logout"><i class='bx bxs-log-out-circle'></i><span
-						class="text">Logout</span></a></li>
+			<li>
+				<a href="{{ url_for('gallery.web_gallery_index') }}">
+					<i class='bx bxs-shopping-bag-alt'></i><span class="text">Data Batik</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('video_bp.index') }}">
+					<i class='bx bxs-video'></i><span class="text">Data Video</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('article.web_article_index') }}">
+					<i class='bx bxs-news'></i><span class="text">Data Artikel</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('event_web.event_index') }}">
+					<i class='bx bxs-calendar-event'></i><span class="text">Data Event</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('batik_place_bp.index') }}">
+					<i class='bx bxs-map'></i><span class="text">Data Mapping</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('auth_web.logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle'></i><span class="text">Logout</span>
+				</a>
+			</li>
 		</ul>
+
 	</section>
 
 	<!-- CONTENT -->
@@ -142,6 +170,7 @@
 	<!-- JavaScript -->
 	<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+	
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, jsonify, current_app, url_for
 from werkzeug.utils import secure_filename
+from models.article_model import article_serializer, create_article_data
 from bson import ObjectId
 import os
 
@@ -42,6 +43,7 @@ def web_article_create():
 
         article = create_article_data(title, description, image_url)
         current_app.mongo.db.articles.insert_one(article)
+        flash(" artikel berhasil ditambahkan!", "success")
         return redirect(url_for('article.web_article_index'))   
 
     return render_template('articles/create.html')
@@ -74,6 +76,7 @@ def web_article_edit(id):
             {"_id": ObjectId(id)},
             {"$set": update_data}
         )
+        flash("Video berhasil diperbarui!", "success")
         return redirect(url_for('article.web_article_index'))
 
     return render_template('articles/edit.html', article=article_serializer(article))

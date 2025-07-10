@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Artikel - Admin BatikKara</title>
+    <title>Data Lokasi Batik - Admin BatikKara</title>
 
     <!-- Boxicons -->
     <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/articles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/event.css') }}" />
 </head>
 
 <body>
@@ -27,16 +27,13 @@
             <li class="menu-label"><span class="text">Master Data</span></li>
             <li><a href="{{ url_for('gallery.web_gallery_index') }}"><i class='bx bxs-shopping-bag-alt'></i><span
                         class="text">Data Batik</span></a></li>
-            <li><a href="{{ url_for('video_bp.index') }}"><i class='bx bxs-group'></i><span class="text">Data
-                        Video</span></a>
-            </li>
-            <li class="active"><a href="{{ url_for('article.web_article_index') }}"><i class='bx bxs-news'></i><span
-                        class="text">Data
+            <li><a href="{{ url_for('video_bp.index') }}"><i class='bx bxs-video'></i><span class="text">Data Video</span></a></li>
+            <li><a href="{{ url_for('article.web_article_index') }}"><i class='bx bxs-news'></i><span class="text">Data
                         Artikel</span></a></li>
             <li><a href="{{ url_for('event_web.event_index') }}"><i class='bx bxs-calendar-event'></i><span
                         class="text">Data Event</span></a></li>
-            <li><a href="{{ url_for('batik_place_bp.index') }}"><i class='bx bxs-cog'></i><span class="text">Data
-                        Mapping</span></a></li>
+            <li class="active"><a href="{{ url_for('batik_place_bp.index') }}"><i class='bx bxs-map'></i><span
+                        class="text">Data Mapping</span></a></li>
             <li><a href="{{ url_for('auth_web.logout') }}" class="logout"><i class='bx bxs-log-out-circle'></i><span
                         class="text">Logout</span></a></li>
         </ul>
@@ -47,10 +44,10 @@
         <!-- NAVBAR -->
         <nav>
             <i class='bx bx-menu'></i>
-            <a href="#" class="nav-link">Data Artikel</a>
+            <a href="#" class="nav-link">Data Mapping</a>
             <form action="#">
                 <div class="form-input">
-                    <input type="search" placeholder="Search article..." />
+                    <input type="search" placeholder="Search lokasi..." />
                     <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
                 </div>
             </form>
@@ -78,66 +75,54 @@
             {% endif %}
             {% endwith %}
 
+
             <div class="head-title">
                 <div class="left">
-                    <h1>Daftar Artikel</h1>
+                    <h1>Daftar Lokasi Batik</h1>
                     <ul class="breadcrumb">
-                        <li><a href="{ url_for('dashboard.admin_dashboard') }">Dashboard</a></li>
+                        <li><a href="{{ url_for('dashboard.admin_dashboard') }}">Dashboard</a></li>
                         <li><i class='bx bx-chevron-right'></i></li>
-                        <li><a class="active" href="#">Data Artikel</a></li>
+                        <li><a class="active" href="#">Data Mapping</a></li>
                     </ul>
                 </div>
-                <a href="{{ url_for('article.web_article_create') }}" class="btn-download">
+                <a href="{{ url_for('batik_place_bp.create') }}" class="btn-download">
                     <i class='bx bx-plus'></i>
-                    <span class="text">Tambah Artikel</span>
+                    <span class="text">Tambah Lokasi</span>
                 </a>
             </div>
 
-            <!-- TABEL ARTIKEL -->
+            <!-- TABEL DATA -->
             <div class="table-data">
                 <div class="order">
                     <div class="head">
-                        <h3>Daftar Artikel</h3>
+                        <h3>Daftar Lokasi Batik</h3>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Foto</th>
-                                <th>Judul</th>
+                                <th>Nama</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
                                 <th>Deskripsi</th>
-                                <th>Waktu</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in articles %}
+                            {% for p in places %}
                             <tr>
+                                <td>{{ p.name }}</td>
+                                <td>{{ p.latitude }}</td>
+                                <td>{{ p.longitude }}</td>
+                                <td class="article-desc">{{ p.description }}</td>
                                 <td>
-                                    {% if item.image_url %}
-                                    <img src="{{ item.image_url }}" width="100" alt="Foto Artikel">
-                                    {% else %}
-                                    <span style="color: gray;">Tidak ada foto</span>
-                                    {% endif %}
-                                </td>
-                                <td>{{ item.title }}</td>
-                                <td class="article-desc">{{ item.description }}</td>
-                                <td>{{ item.created_at }}</td>
-
-                                <td>{{ item.judul }}</td>
-                                <td class="article-desc">{{ item.deskripsi }}</td>
-                                <td>{{ item.waktu if item.waktu else "-" }}</td>
-                                <td>
-                                    <!-- Tombol Edit -->
-                                    <a href="{{ url_for('article.web_article_edit', id=item.id) }}"
+                                    <a href="{{ url_for('batik_place_bp.edit', id=p._id) }}"
                                         class="btn-action btn-edit">
                                         <i class='bx bx-edit-alt'></i> Edit
                                     </a>
-
-                                    <!-- Tombol Delete -->
-                                    <form action="{{ url_for('article.web_article_delete', id=item.id) }}" method="POST"
+                                    <form action="{{ url_for('batik_place_bp.delete', id=p._id) }}" method="GET"
                                         style="display:inline;">
                                         <button type="submit" class="btn-action btn-delete"
-                                            onclick="return confirm('Yakin ingin menghapus artikel ini?')">
+                                            onclick="return confirm('Yakin ingin menghapus lokasi ini?')">
                                             <i class='bx bx-trash'></i> Delete
                                         </button>
                                     </form>
@@ -145,7 +130,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="5">Belum ada data artikel.</td>
+                                <td colspan="5">Belum ada data lokasi batik.</td>
                             </tr>
                             {% endfor %}
                         </tbody>

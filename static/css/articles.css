@@ -839,3 +839,62 @@ body {
 .btn-delete:hover {
   opacity: 0.9;
 }
+
+
+.popup {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: #4BB543;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 999;
+  font-size: 14px;
+  animation: fadeInOut 3s ease-in-out forwards;
+}
+
+.popup-content.success {
+  background-color: #4BB543;
+}
+
+.popup-content.danger {
+  background-color: #dc3545;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); display: none; }
+}
+
+.btn-action {
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  text-decoration: none;
+  margin-right: 5px;
+}
+
+.btn-edit {
+  background-color: #3498db;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+}
+table td img {
+  max-width: 90px;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+

@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Event - Admin BatikKara</title>
+  <title>Data Video - Admin BatikKara</title>
 
   <!-- Boxicons -->
   <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/event.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/galeri.css') }}" />
 </head>
 
 <body>
@@ -26,29 +26,28 @@
       <li class="menu-label"><span class="text">Master Data</span></li>
       <li><a href="{{ url_for('gallery.web_gallery_index') }}"><i class='bx bxs-shopping-bag-alt'></i><span
             class="text">Data Batik</span></a></li>
-      <li><a href="{{ url_for('video_bp.index') }}"><i class='bx bxs-video'></i><span class="text">Data
-            Video</span></a>
-      </li>
+      <li class="active"><a href="{{ url_for('video_bp.index') }}"><i class='bx bxs-video'></i><span class="text">Data
+            Video</span></a></li>
       <li><a href="{{ url_for('article.web_article_index') }}"><i class='bx bxs-news'></i><span class="text">Data
             Artikel</span></a></li>
-      <li class="active"><a href="{{ url_for('event_web.event_index') }}"><i class='bx bxs-calendar-event'></i><span
-            class="text">Data Event</span></a></li>
-      <li><a href="{{ url_for('batik_place_bp.index') }}"><i class='bx bxs-map'></i><span class="text">Data
+      <li><a href="{{ url_for('event_web.event_index') }}"><i class='bx bxs-calendar-event'></i><span class="text">Data
+            Event</span></a></li>
+      <li><a href="{{ url_for('batik_place_bp.index') }}"><i class='bx bxs-map''></i><span class="text">Data
             Mapping</span></a></li>
-      <li><a href="{{ url_for('auth_web.logout') }}" class="logout"><i class='bx bxs-log-out-circle'></i><span
-            class="text">Logout</span></a></li>
+      <li><a href="/logout" class="logout"><i class='bx bxs-log-out-circle'></i><span class="text">Logout</span></a>
+      </li>
     </ul>
-
   </section>
 
   <!-- CONTENT -->
   <section id="content">
+    <!-- NAVBAR -->
     <nav>
       <i class='bx bx-menu'></i>
-      <a href="#" class="nav-link">Data Event</a>
+      <a href="#" class="nav-link">Data Video</a>
       <form action="#">
         <div class="form-input">
-          <input type="search" placeholder="Search event..." />
+          <input type="search" placeholder="Search video..." />
           <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
         </div>
       </form>
@@ -58,7 +57,10 @@
       <a href="#" class="profile"><img src="{{ url_for('static', filename='img/people.png') }}" alt="profile" /></a>
     </nav>
 
+    <!-- MAIN -->
     <main>
+
+      <!-- Flash Message -->
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       <div id="popup" class="popup show">
@@ -74,74 +76,81 @@
 
       <div class="head-title">
         <div class="left">
-          <h1>Daftar Event</h1>
+          <h1>Daftar Video Edukasi</h1>
           <ul class="breadcrumb">
             <li><a href="{{ url_for('dashboard.admin_dashboard') }}">Dashboard</a></li>
             <li><i class='bx bx-chevron-right'></i></li>
-            <li><a class="active" href="#">Data Event</a></li>
+            <li><a class="active" href="#">Data Video</a></li>
           </ul>
         </div>
-        <a href="{{ url_for('event_web.create_event') }}" class="btn-download">
+        <a href="{{ url_for('video_bp.create') }}" class="btn-download">
           <i class='bx bx-plus'></i>
-          <span class="text">Tambah Event</span>
+          <span class="text">Tambah Video</span>
         </a>
       </div>
 
+      <!-- TABEL VIDEO -->
       <div class="table-data">
         <div class="order">
           <div class="head">
-            <h3>Daftar Event</h3>
+            <h3>Daftar Video Edukasi</h3>
           </div>
           <table>
             <thead>
               <tr>
-                <th>Foto</th>
-                <th>Judul</th>
-                <th>Waktu</th>
-                <th>Lokasi</th>
+                <th>Thumbnail</th>
+                <th>Judul Video</th>
                 <th>Deskripsi</th>
+                <th>Tonton</th>
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {% for event in events %}
+              {% for video in videos %}
               <tr>
                 <td>
-                  {% if event.foto %}
-                  <img src="{{ url_for('static', filename='uploads/' + event.foto) }}" alt="Foto Event" width="100"
+                  {% if video.youtubeUrl %}
+                  {% set youtube_id = None %}
+                  {% if 'v=' in video.youtubeUrl %}
+                  {% set youtube_id = video.youtubeUrl.split('v=')[-1].split('&')[0] %}
+                  {% elif 'youtu.be/' in video.youtubeUrl %}
+                  {% set youtube_id = video.youtubeUrl.split('youtu.be/')[-1].split('?')[0] %}
+                  {% endif %}
+                  {% if youtube_id %}
+                  <img src="https://img.youtube.com/vi/{{ youtube_id }}/0.jpg" alt="Thumbnail" width="100"
                     style="border-radius: 10px;">
                   {% else %}
-                  <img src="{{ url_for('static', filename='img/default-event.jpg') }}" alt="Default" width="100"
-                    style="border-radius: 10px;">
+                  <span style="color: gray;">URL tidak valid</span>
                   {% endif %}
-                </td>
-                <td>{{ event.judul }}</td>
-                <td>
-                  {% if event.waktu %}
-                  {{ event.waktu.strftime('%d-%m-%Y %H:%M') }}
                   {% else %}
-                  -
+                  <span style="color: gray;">Tidak ada video</span>
                   {% endif %}
                 </td>
-                <td>{{ event.lokasi }}</td>
-                <td>{{ event.deskripsi }}</td>
+                <td>{{ video.title }}</td>
+                <td>{{ video.description[:100] }}{% if video.description|length > 100 %}...{% endif %}</td>
                 <td>
-                  <a href="{{ url_for('event_web.edit_event', id=event._id) }}" class="btn-action btn-edit">
-                    <i class='bx bx-edit-alt'></i> Edit
+                  {% if youtube_id %}
+                  <a href="https://www.youtube.com/watch?v={{ youtube_id }}" target="_blank">▶️ Tonton</a>
+                  {% else %}
+                  <span style="color: gray;">-</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ url_for('video_bp.edit', id=video._id) }}" class="btn-action btn-edit">
+                    <i class='bx bx-edit'></i> Edit
                   </a>
-                  <a href="{{ url_for('event_web.delete_event', id=event._id) }}" class="btn-action btn-delete"
-                    onclick="return confirm('Yakin hapus event ini?')">
-                    <i class='bx bx-trash'></i> Delete
+                  <a href="{{ url_for('video_bp.delete', id=video._id) }}" class="btn-action btn-delete"
+                    onclick="return confirm('Yakin ingin menghapus video ini?')">
+                    <i class='bx bx-trash'></i> Hapus
                   </a>
                 </td>
               </tr>
               {% else %}
               <tr>
-                <td colspan="6">Belum ada event.</td>
+                <td colspan="5">Belum ada data video edukasi.</td>
               </tr>
               {% endfor %}
             </tbody>
-
           </table>
         </div>
       </div>

@@ -26,15 +26,10 @@ def create_event():
 
     if request.method == "POST":
         judul = request.form.get("judul")
-        waktu_str = request.form.get("datetime")
+        waktu = request.form.get("waktu")
         lokasi = request.form.get("lokasi")
         deskripsi = request.form.get("deskripsi")
         foto = request.files.get("foto")
-
-        # Parsing waktu ke WIB (zona Asia/Jakarta)
-        waktu = datetime.strptime(waktu_str, "%Y-%m-%dT%H:%M")
-        waktu = waktu.replace(tzinfo=tz.tzlocal())
-        waktu = waktu.astimezone(timezone("Asia/Jakarta"))
 
         filename = ""
         if foto:
@@ -44,7 +39,7 @@ def create_event():
 
         event_col.insert_one({
             "judul": judul,
-            "datetime": waktu,
+            "waktu": waktu,
             "lokasi": lokasi,
             "deskripsi": deskripsi,
             "foto": filename
@@ -67,19 +62,15 @@ def edit_event(id):
 
     if request.method == "POST":
         judul = request.form.get("judul")
-        waktu_str = request.form.get("datetime")
+        waktu = request.form.get("waktu")
         lokasi = request.form.get("lokasi")
         deskripsi = request.form.get("deskripsi")
         foto = request.files.get("foto")
 
-        # Parsing waktu ke WIB
-        waktu = datetime.strptime(waktu_str, "%Y-%m-%dT%H:%M")
-        waktu = waktu.replace(tzinfo=tz.tzlocal())
-        waktu = waktu.astimezone(timezone("Asia/Jakarta"))
 
         update_data = {
             "judul": judul,
-            "datetime": waktu,
+            "waktu": waktu,
             "lokasi": lokasi,
             "deskripsi": deskripsi
         }
